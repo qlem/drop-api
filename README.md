@@ -1,7 +1,7 @@
-# API Drop
+# Drop's API
 API built using GraphQL and Prisma.io
 
-##### Requirements
+**Requirements**
  - docker installed and started
  - [docker-compose](https://docs.docker.com/compose/install/)
  - node
@@ -11,9 +11,9 @@ API built using GraphQL and Prisma.io
 $ npm install -g prisma
 ```
 
-##### Installation
+**Installation**
 ```
-$ git clone ssh://git@phabricator.drop.run/source/api_drop.git
+$ git clone ssh://git@phabricator.drop.run/source/api.git
 $ cd api_drop
 $ npm intall
 $ cd prisma
@@ -21,10 +21,10 @@ $ docker-compose up -d
 $ prisma deploy
 ```
 
-##### Run
+**Run**
 ```
 $ npm start
 ```
 
-##### GraphQL Playground
+**GraphQL Playground**
 open a browser and go to http://localhost:4000
