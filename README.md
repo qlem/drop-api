@@ -6,13 +6,13 @@ API built using GraphQL and Prisma.io
  - node
  - npm (installed with node)
  - [prisma cli](https://www.prisma.io/docs/prisma-cli-and-configuration/using-the-prisma-cli-alx4/)
-	```
-	$ npm install -g prisma
-	```
+```
+$ npm install -g prisma
+```
 
 ##### Installation
 ```
-$ git clone https://github.com/doums/drop_api.git
+$ git clone ssh://git@phabricator.drop.run/source/api_drop.git
 $ cd drop_api
 $ npm intall
 $ cd prisma
