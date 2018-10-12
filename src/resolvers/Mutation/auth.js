@@ -14,7 +14,7 @@ export default {
   },
 
   async login (parent, { email, password }, ctx) {
-    const user = await ctx.prisma.$exists.user({ email })
+    const user = await ctx.prisma.user({ email })
     if (!user) {
       throw new Error('Invalid email')
     }
