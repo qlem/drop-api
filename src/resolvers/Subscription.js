@@ -1,16 +1,9 @@
-const Subscription = {
-  posts: {
-    subscribe: (parent, args, ctx, info) => {
-      return ctx.db.subscription.post(
-        {
-          where: {
-            mutation_in: ['CREATED', 'UPDATED', 'DELETED']
-          }
-        },
-        info
-      )
+export default {
+  drafts: {
+    subscribe: async (parent, args, ctx) => {
+      return ctx.prisma.$subscribe.draft({
+        mutation_in: ['CREATED', 'UPDATED', 'DELETED']
+      }).node()
     }
   }
 }
-
-module.exports = { Subscription }
