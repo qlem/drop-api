@@ -32,4 +32,4 @@ open a browser and go to http://localhost:4000
 **Development**
  - use ES6 synthax (thank to Babel)
  - respect the ESLint and StandardJS rules (with WebStorm you can enable IDE [highlight](https://www.jetbrains.com/help/webstorm/eslint.html))
- - after each change to the data models (*datamodel.prisma*) be sure to run `$ prisma deploy`
+ - after each change to the data models (_datamodel.prisma_) be sure to run `$ prisma deploy`
