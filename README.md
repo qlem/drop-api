@@ -2,6 +2,7 @@
 API built using GraphQL and Prisma.io
 
 ##### Requirements
+
  - docker installed and started
  - [docker-compose](https://docs.docker.com/compose/install/)
  - node
