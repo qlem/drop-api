@@ -38,6 +38,6 @@ export default {
       throw new Error('Draft not found or you\'re not the author')
     }
 
-    return ctx.prisma.deleteDraft({ where: { id } })
+    return ctx.prisma.deleteDraft({ id })
   }
 }
