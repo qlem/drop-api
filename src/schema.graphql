@@ -1,0 +1,39 @@
+# import Draft, DraftOrderByInput, UserOrderByInput, DraftSubscriptionPayload  from "./generated/prisma.graphql"
+
+type Query {
+  dropped(orderBy: DraftOrderByInput, skip: Int, first: Int, last: Int): [Draft!]!
+  users(orderBy: UserOrderByInput): [User!]!
+  draft(id: ID!): Draft
+  user(id: ID!): User
+  amIAuth: AuthCheck!
+}
+
+type AuthCheck {
+  isAuth: Boolean!
+  me: User
+}
+
+type Mutation {
+  signup(email: String!, password: String!, username: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  updateUser(username: String!): User!
+  drop(text: String!): Draft!
+  updateDraft(id: ID!, text: String!): Draft!
+  deleteDraft(id: ID!): Draft!
+}
+
+type Subscription {
+  drafts: DraftSubscriptionPayload
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  username: String!
+  drafts: [Draft!]!
+}
