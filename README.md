@@ -2,7 +2,6 @@
 API built using GraphQL and Prisma.io
 
 ##### Requirements
-
  - docker installed and started
  - [docker-compose](https://docs.docker.com/compose/install/)
  - node
@@ -15,7 +14,7 @@ $ npm install -g prisma
 ##### Installation
 ```
 $ git clone ssh://git@phabricator.drop.run/source/api_drop.git
-$ cd drop_api
+$ cd api_drop
 $ npm intall
 $ cd prisma
 $ docker-compose up -d
