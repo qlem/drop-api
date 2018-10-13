@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { secret } from '../constants'
 
 export default {
   dropped (parent, args, ctx) {
@@ -29,7 +28,7 @@ export default {
     if (Authorization) {
       try {
         const token = Authorization.replace('Bearer ', '')
-        const { userId } = jwt.verify(token, secret)
+        const { userId } = jwt.verify(token, process.env.API_SECRET)
         const me = ctx.prisma.user({ id: userId })
         return { isAuth: true, me }
       } catch (e) {

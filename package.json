@@ -4,19 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node src/index.js"
+    "start": "babel-node src/index.js",
+    "build": "npx babel src --out-dir dist",
+    "serve": "node -r dotenv/config dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^6.1.0",
     "graphql": "^0.13.2",
     "graphql-yoga": "^1.16.2",
     "jsonwebtoken": "^8.3.0",
     "prisma-client-lib": "^1.18.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.0",

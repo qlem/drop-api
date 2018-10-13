@@ -1,23 +1,21 @@
 import jwt from 'jsonwebtoken'
-import { secret } from './constants'
 
-export function getUserId(ctx) {
+export function getUserId (ctx) {
   const Authorization = ctx.request.get('Authorization')
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '')
-    const { userId } = jwt.verify(token, secret)
+    const { userId } = jwt.verify(token, process.env.API_SECRET)
     return userId
   }
-
   throw new AuthError()
 }
 
 export class AuthError extends Error {
-  constructor() {
+  constructor () {
     super('Not authorized')
   }
 }
 
-export function sleep(ms) {
+export function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }

@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { secret } from '../../constants'
 
 export default {
   async signup (parent, args, ctx) {
@@ -8,7 +7,7 @@ export default {
     const user = await ctx.prisma.createUser({ ...args, password })
 
     return {
-      token: jwt.sign({ userId: user.id }, secret),
+      token: jwt.sign({ userId: user.id }, process.env.API_SECRET),
       user
     }
   },
@@ -25,7 +24,7 @@ export default {
     }
 
     return {
-      token: jwt.sign({ userId: user.id }, secret),
+      token: jwt.sign({ userId: user.id }, process.env.API_SECRET),
       user
     }
   }
