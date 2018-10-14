@@ -37,7 +37,7 @@ $ prisma token --env-file ../.env
 Then copy/paste the generated token into the HTTP HEADERS section of the playground like this
 ```
 {
-  "Authorization": "Bearer __token__"
+  "Authorization": "Bearer token"
 }
 ```
 
@@ -51,6 +51,6 @@ Then copy/paste the generated token into the HTTP HEADERS section of the playgro
 generate a valid token through mutations such as `login` or `signup` then copy/paste it into the HTTP HEADERS section of the playground like this
 ```
 {
-  "Authorization": "Bearer __token__"
+  "Authorization": "Bearer token"
 }
 ```
