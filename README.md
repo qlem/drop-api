@@ -29,14 +29,15 @@ $ npm start
 **GraphQL Playground**
  - API http://localhost:4000
  - Prisma service http://localhost:4466
-   requires a token:
-   `$ prisma token --env-file ../.env`
-   Then copy/paste the generated token in the HTTP HEADERS section of the playground
-   ```
-   {
-     "Authorization": "Bearer __token__"
-   }
-   ```
+
+The playground of the prisma service requires an authentication token to access its API:
+`$ prisma token --env-file ../.env`
+Then copy/paste the generated token in the HTTP HEADERS section of the playground
+```
+{
+  "Authorization": "Bearer __token__"
+}
+```
 
 **Development**
  - use ES6 synthax (thank to Babel)
