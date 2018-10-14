@@ -31,7 +31,9 @@ $ npm start
  - Prisma service http://localhost:4466
 
 The playground of the prisma service requires an authentication token to access its API:
-`$ prisma token --env-file ../.env`
+```
+$ prisma token --env-file ../.env
+```
 Then copy/paste the generated token in the HTTP HEADERS section of the playground
 ```
 {
