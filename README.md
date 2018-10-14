@@ -34,7 +34,7 @@ The playground of the prisma service requires an authentication token to access 
 ```
 $ prisma token --env-file ../.env
 ```
-Then copy/paste the generated token in the HTTP HEADERS section of the playground
+Then copy/paste the generated token into the HTTP HEADERS section of the playground like this
 ```
 {
   "Authorization": "Bearer __token__"
@@ -45,3 +45,13 @@ Then copy/paste the generated token in the HTTP HEADERS section of the playgroun
  - use ES6 synthax (thank to Babel)
  - respect the ESLint and StandardJS rules (with WebStorm you can enable IDE [highlight](https://www.jetbrains.com/help/webstorm/eslint.html))
  - after each change to the data models (datamodel.prisma) be sure to run `$ prisma deploy --env-file ../.env` (in prisma/ directory)
+ - API's queries, mutations and subscriptions are exposed in the playground (open the SCHEMA tab on the right)
+ - API authentication
+
+generate a valid token through mutations such as `login` or `signup`
+Then copy/paste it into the HTTP HEADERS section of the playground like this
+```
+{
+  "Authorization": "Bearer __token__"
+}
+```
