@@ -48,8 +48,7 @@ Then copy/paste the generated token into the HTTP HEADERS section of the playgro
  - API's queries, mutations and subscriptions are exposed in the playground (open the SCHEMA tab on the right)
  - API authentication
 
-generate a valid token through mutations such as `login` or `signup`
-Then copy/paste it into the HTTP HEADERS section of the playground like this
+generate a valid token through mutations such as `login` or `signup` then copy/paste it into the HTTP HEADERS section of the playground like this
 ```
 {
   "Authorization": "Bearer __token__"
