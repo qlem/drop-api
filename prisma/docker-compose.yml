@@ -1,28 +1,30 @@
 version: '3'
 services:
-  prisma:
+  drop_prisma:
+    container_name: drop-prisma
     image: prismagraphql/prisma:1.18
     restart: always
     ports:
-    - "4466:4466"
+      - "4467:4467"
     environment:
       PRISMA_CONFIG: |
-        port: 4466
+        port: 4467
         databases:
           default:
             connector: postgres
-            host: postgres
+            host: drop_db
             port: 5432
             user: prisma
             password: prisma
             migrations: true
-  postgres:
+  drop_db:
+    container_name: drop_db
     image: postgres:10.5
     restart: always
     environment:
       POSTGRES_USER: prisma
       POSTGRES_PASSWORD: prisma
     volumes:
-    - postgres:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
 volumes:
-  postgres:
+  db:
