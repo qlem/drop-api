@@ -54,3 +54,21 @@ generate a valid token through mutations such as `login` or `signup` then copy/p
   "Authorization": "Bearer token"
 }
 ```
+
+**Update prisma container**
+Because Prisma release frequently new updates we need to install these new updates to stay up to date and enjoy the new features
+Each time we update Prisma, the previous prisma docker container need do be deleted and the new one pulled and run
+First step stop the server if it's running (started by `npm start`)
+```
+$ docker ps -a
+```
+This command list all installed containers
+Look for a docker named drop-prisma (last column) and copy its container ID (first column)
+```
+$ docker stop container_ID
+$ docker rm container_ID
+$ cd path/to/api_drop/prisma
+$ docker-compose up -d
+```
+
+_note: the above steps doesn't impact the database and its data_
