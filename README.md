@@ -44,7 +44,7 @@ $ npm start
 
 **Push changes and review workflow**
 
-First for each new feature/fix/task you create a new feature branch for it from `master`. Then you commit and push on it.
+First for each new feature/fix/task you have to create a new feature branch from `master`. Then you commit and push on it.
 Once your work is done on this branch you need to send it to review, ie. you create a revision:
 ```
 $ arc diff
