@@ -23,6 +23,7 @@ $ prisma deploy --env-file ../.env
 ```
 
 **Arcanist**
+
 Arcanist is the revision tool used for the project (the Github's PR system equivalent)
 
 In a directory of your choice (like /opt) enter the following commands
@@ -42,6 +43,7 @@ $ npm start
 ```
 
 **Push changes and review workflow**
+
 First for each new feature/fix/task you create a new feature branch for it from `master`. Then you commit and push on it.
 Once your work is done on this branch you need to send it to review, ie. you create a revision:
 ```
