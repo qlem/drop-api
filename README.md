@@ -24,7 +24,7 @@ $ prisma deploy --env-file ../.env
 
 **Arcanist**
 
-Arcanist is the revision tool used for the project (the Github's PR system equivalent)
+[Arcanist](https://secure.phabricator.com/book/phabricator/article/arcanist/) is the revision tool used for the project (the Github's PR system equivalent)
 
 In a directory of your choice (like /opt) enter the following commands
 ```
