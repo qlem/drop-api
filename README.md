@@ -57,8 +57,8 @@ generate a valid token through mutations such as `login` or `signup` then copy/p
 
 **Update prisma container**
 
-Because Prisma release frequently new updates we need to install these new updates to stay up to date and enjoy the new features
-Each time we update Prisma, the previous prisma docker container need do be deleted and the new one pulled and run
+Because Prisma release frequently new updates we need to install these new updates to stay up to date and enjoy the new features.
+Each time we update Prisma, the previous prisma docker container need do be deleted and the new one pulled and run.
 First step stop the server if it's running (started by `npm start`)
 ```
 $ docker ps -a
