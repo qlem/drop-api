@@ -51,7 +51,10 @@ $ arc diff
 ```
 This will automatically open a new Revision on [phabricator](https://phabricator.drop.run/differential/).
 Then you have to wait for reviewers to check it and validate it.
-If you need to update your revision (eg. apply some corrections), commit your changes and run the same command above.
+If you need to update your revision (eg. apply some corrections), commit your changes and run
+```
+$ arc diff --update <revision_title>
+```
 When the Revision is accepted you need to merge your branch in `master`
 ```
 $ arc land <feature_branch>
