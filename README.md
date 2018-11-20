@@ -106,3 +106,8 @@ $ docker-compose up -d
 ```
 
 note: the above steps does not impact the database and its data
+
+**Update Arcanist**
+```
+$ arc upgrade
+```
