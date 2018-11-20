@@ -63,7 +63,7 @@ First step stop the server if it's running (started by `npm start`)
 ```
 $ docker ps -a
 ```
-This command list all installed containers
+This command list all installed containers.
 Look for a docker named drop-prisma (last column) and copy its container ID (first column)
 ```
 $ docker stop container_ID
