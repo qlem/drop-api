@@ -71,4 +71,4 @@ $ cd path/to/api_drop/prisma
 $ docker-compose up -d
 ```
 
-_note: the above steps doesn't impact the database and its data_
+_note: the above steps does not impact the database and its data_
