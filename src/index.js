@@ -4,8 +4,8 @@ import { GraphQLServer } from 'graphql-yoga'
 import { Prisma } from './generated/prisma-client'
 import Query from './resolvers/Query'
 import auth from './resolvers/Mutation/auth'
-import draft from './resolvers/Mutation/draft'
-import Draft from './resolvers/Draft'
+import drop from './resolvers/Mutation/drop'
+import Drop from './resolvers/Drop'
 import User from './resolvers/User'
 import user from './resolvers/Mutation/user'
 
@@ -20,11 +20,11 @@ const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
   resolvers: {
     Query,
-    Draft,
+    Drop,
     User,
     Mutation: {
       ...auth,
-      ...draft,
+      ...drop,
       ...user
     }
   },

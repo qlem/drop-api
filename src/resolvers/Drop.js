@@ -1,5 +1,5 @@
 export default {
   author (parent, args, ctx) {
-    return ctx.prisma.draft({id: parent.id}).author()
+    return ctx.prisma.drop({id: parent.id}).author()
   }
 }

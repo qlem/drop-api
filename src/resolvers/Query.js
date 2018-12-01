@@ -2,15 +2,15 @@ import jwt from 'jsonwebtoken'
 
 export default {
   dropped (parent, args, ctx) {
-    return ctx.prisma.drafts({
+    return ctx.prisma.drops({
       orderBy: args.orderBy,
       skip: args.skip,
       first: args.first,
       last: args.last })
   },
 
-  draft (parent, { id }, ctx) {
-    return ctx.prisma.draft({ id })
+  drop (parent, { id }, ctx) {
+    return ctx.prisma.drop({ id })
   },
 
   users (parent, args, ctx) {

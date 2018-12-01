@@ -1,7 +1,7 @@
 export default {
-  drafts (parent, args, context) {
+  drops (parent, args, context) {
     return context.prisma.user({
       id: parent.id
-    }).drafts()
+    }).drops()
   }
 }
