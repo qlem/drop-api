@@ -4,6 +4,7 @@ type Drop {
   updatedAt: DateTime!
   text: String!
   author: User
+  location: Location!
 }
 
 type User {
@@ -12,4 +13,10 @@ type User {
   password: String!
   username: String! @unique
   drops: [Drop!]!
+}
+
+type Location {
+  latitude: Float!
+  longitude: Float!
+  altitude: Float!
 }
