@@ -1,4 +1,4 @@
-# import Drop, DropOrderByInput, UserOrderByInput  from "./generated/prisma.graphql"
+# import Drop, DropOrderByInput, UserOrderByInput, LocationCreateInput  from "./generated/prisma.graphql"
 
 type Query {
   dropped(orderBy: DropOrderByInput, skip: Int, first: Int, last: Int): [Drop!]!
@@ -17,7 +17,7 @@ type Mutation {
   signup(email: String!, password: String!, username: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   updateUser(username: String!): User!
-  createDrop(text: String!): Drop!
+  createDrop(text: String!, location: LocationCreateInput!): Drop!
   updateDrop(id: ID!, text: String!): Drop!
   deleteDrop(id: ID!): Drop!
 }

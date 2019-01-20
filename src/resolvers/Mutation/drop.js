@@ -1,10 +1,17 @@
 import { getUserId } from '../../utils'
 
 export default {
-  async createDrop (parent, { text }, ctx) {
+  async createDrop (parent, { text, location: { latitude, longitude, altitude } }, ctx) {
     const userId = getUserId(ctx)
     return ctx.prisma.createDrop({
       text,
+      location: {
+        create: {
+          latitude,
+          longitude,
+          altitude
+        }
+      },
       author: {
         connect: { id: userId }
       }
