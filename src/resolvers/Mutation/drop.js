@@ -1,10 +1,11 @@
 import { getUserId } from '../../utils'
 
 export default {
-  async createDrop (parent, { text, location: { latitude, longitude, altitude } }, ctx) {
+  async createDrop (parent, { text, location: { latitude, longitude, altitude }, color }, ctx) {
     const userId = getUserId(ctx)
     return ctx.prisma.createDrop({
       text,
+      color,
       location: {
         create: {
           latitude,
@@ -18,7 +19,7 @@ export default {
     })
   },
 
-  async updateDrop (parent, { id, text }, ctx) {
+  async updateDrop (parent, { id, text, color }, ctx) {
     const userId = getUserId(ctx)
     const dropExists = await ctx.prisma.$exists.drop({
       id,
@@ -30,7 +31,8 @@ export default {
     return ctx.prisma.updateDrop({
       where: { id },
       data: {
-        text
+        text,
+        color
       }
     })
   },

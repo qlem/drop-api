@@ -17,8 +17,8 @@ type Mutation {
   signup(email: String!, password: String!, username: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   updateUser(username: String!): User!
-  createDrop(text: String!, location: LocationCreateInput!): Drop!
-  updateDrop(id: ID!, text: String!): Drop!
+  createDrop(text: String!, location: LocationCreateInput!, color: String!): Drop!
+  updateDrop(id: ID!, text: String, color: String): Drop!
   deleteDrop(id: ID!): Drop!
 }
 

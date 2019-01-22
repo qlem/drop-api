@@ -5,6 +5,7 @@ type Drop {
   text: String!
   author: User
   location: Location!
+  color: String!
 }
 
 type User {
