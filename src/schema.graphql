@@ -2,6 +2,7 @@
 
 type Query {
   dropped(orderBy: DropOrderByInput, skip: Int, first: Int, last: Int): [Drop!]!
+  droppedAround(latitude: Float!, longitude: Float!, radius: Int!): [Drop!]!
   users(orderBy: UserOrderByInput): [User!]!
   drop(id: ID!): Drop
   user(id: ID!): User

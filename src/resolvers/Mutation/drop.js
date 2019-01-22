@@ -37,7 +37,7 @@ export default {
     })
   },
 
-  async deleteDrop (parent, { id }, ctx, ) {
+  async deleteDrop (parent, { id }, ctx) {
     const userId = getUserId(ctx)
     const dropExists = await ctx.prisma.$exists.drop({
       id,
