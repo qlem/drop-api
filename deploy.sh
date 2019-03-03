@@ -12,4 +12,4 @@ cd prisma
 prisma deploy --env-file ../.env
 cd ..
 npm run build
-pm2 restart API
+pm2 restart API --env production

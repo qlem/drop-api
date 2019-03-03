@@ -2,29 +2,38 @@
   "name": "drop_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "babel-node src/index.js",
-    "build": "npx babel src --out-dir dist",
+    "start": "ts-node-dev --no-notify --respawn --transpileOnly ./src",
+    "build": "tsc",
     "serve": "node -r dotenv/config dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
-    "bcryptjs": "^2.4.3",
+    "apollo-server": "^2.4.8",
+    "bcrypt": "^3.0.4",
     "dotenv": "^6.2.0",
-    "graphql": "^0.13.2",
-    "graphql-yoga": "^1.17.4",
+    "graphql": "^14.1.1",
+    "graphql-upload": "^8.0.4",
     "jsonwebtoken": "^8.5.0",
-    "prisma-client-lib": "^1.27.0"
+    "nexus-prisma": "^0.3.4",
+    "prisma-client-lib": "^1.27.4",
+    "shortid": "^2.2.14"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.3",
-    "@babel/node": "^7.2.2",
-    "@babel/preset-env": "^7.3.1",
-    "eslint": "^5.14.1",
-    "standard": "^12.0.1"
+    "@types/bcrypt": "^3.0.0",
+    "@types/dotenv": "^6.1.0",
+    "@types/graphql": "^14.0.7",
+    "@types/jsonwebtoken": "^8.3.0",
+    "@types/node": "^11.10.4",
+    "@types/shortid": "0.0.29",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
+    "eslint": "^5.15.0",
+    "nexus": "^0.10.0",
+    "standard": "^12.0.1",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typescript": "^3.3.3333"
   }
 }
