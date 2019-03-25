@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt'
 
 export const Mutation = prismaObjectType({
   name: 'Mutation',
-  definition(t) {
+  definition (t) {
     t.field('signup', {
       type: 'AuthPayload',
       args: {
