@@ -28,7 +28,9 @@ export const Query = prismaObjectType({
         for (let drop of dropped) {
           const location = await ctx.prisma.drop({ id: drop.id }).location()
           const distance = findDistance({ latitude, longitude }, { latitude: location.latitude, longitude: location.longitude })
-          if (distance <= radius) closeDrops.push(drop)
+          if (distance <= radius) {
+            closeDrops.push(drop)
+          }
         }
         return closeDrops
       }

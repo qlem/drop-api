@@ -1,3 +1,8 @@
+enum LikeState {
+  LIKED
+  DISLIKED
+}
+
 type Drop {
   id: ID! @unique
   createdAt: DateTime!
@@ -17,7 +22,15 @@ type User {
 }
 
 type Location {
+  id: ID! @unique
   latitude: Float!
   longitude: Float!
   altitude: Float!
+}
+
+type Like {
+  id: ID! @unique
+  drop: Drop!
+  user: User!
+  state: LikeState
 }

@@ -13,7 +13,7 @@ interface Location {
 
 const EARTH_RADIUS = 6371000
 
-export function getUserId (ctx: Context): string {
+export function getUserId (ctx: Context, withoutError: boolean = false): string {
   const Authorization = ctx.req.get('Authorization')
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '')
@@ -21,8 +21,14 @@ export function getUserId (ctx: Context): string {
       const { userId } = jwt.verify(token, process.env.API_SECRET) as Token
       return userId
     } catch (e) {
+      if (withoutError) {
+        return null
+      }
       throw new AuthenticationError('Not authorized')
     }
+  }
+  if (withoutError) {
+    return null
   }
   throw new AuthenticationError('Not authorized')
 }

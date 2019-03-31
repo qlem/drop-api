@@ -3,6 +3,7 @@ import { arg, idArg, stringArg } from 'nexus'
 import { getUserId } from '../utils'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
+import { ApolloError, AuthenticationError } from 'apollo-server'
 
 export const Mutation = prismaObjectType({
   name: 'Mutation',
@@ -32,11 +33,11 @@ export const Mutation = prismaObjectType({
       resolve: async (parent, {email, password}, ctx) => {
         const user = await ctx.prisma.user({email})
         if (!user) {
-          throw new Error('Invalid email')
+          throw new AuthenticationError('Invalid email')
         }
         const valid = await bcrypt.compare(password, user.password)
         if (!valid) {
-          throw new Error('Invalid password')
+          throw new AuthenticationError('Invalid password')
         }
         return {
           token: jwt.sign({userId: user.id}, process.env.API_SECRET),
@@ -83,7 +84,7 @@ export const Mutation = prismaObjectType({
           author: {id: userId}
         })
         if (!dropExists) {
-          throw new Error('Drop not found or you\'re not the author')
+          throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
         }
         return ctx.prisma.updateDrop({
           where: {id},
@@ -106,7 +107,7 @@ export const Mutation = prismaObjectType({
           author: {id: userId}
         })
         if (!dropExists) {
-          throw new Error('Drop not found or you\'re not the author')
+          throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
         }
 
         return ctx.prisma.deleteDrop({id})
@@ -125,6 +126,103 @@ export const Mutation = prismaObjectType({
             username
           }
         })
+      }
+    })
+    t.field('like', {
+      type: 'Drop',
+      args: {
+        id: idArg()
+      },
+      resolve: async (parent, { id }, ctx) => {
+        const userId = getUserId(ctx)
+        const dropExists = await ctx.prisma.$exists.drop({ id })
+        if (!dropExists) {
+          throw new ApolloError('Drop not found', 'BAD REQUEST')
+        }
+        const [ like ] = await ctx.prisma.likes({
+          where: {
+            drop: { id },
+            user: { id: userId }
+          }
+        })
+        if (like) {
+          await ctx.prisma.updateLike({
+            where: { id: like.id },
+            data: { state: 'LIKED' }
+          })
+        } else {
+          await ctx.prisma.createLike({
+            state: 'LIKED',
+            drop: {
+              connect: { id }
+            },
+            user: {
+              connect: { id: userId }
+            }
+          })
+        }
+        return ctx.prisma.drop({ id })
+      }
+    })
+    t.field('dislike', {
+      type: 'Drop',
+      args: {
+        id: idArg()
+      },
+      resolve: async (parent, { id }, ctx) => {
+        const userId = getUserId(ctx)
+        const dropExists = await ctx.prisma.$exists.drop({ id })
+        if (!dropExists) {
+          throw new ApolloError('Drop not found', 'BAD REQUEST')
+        }
+        const [ like ] = await ctx.prisma.likes({
+          where: {
+            drop: { id },
+            user: { id: userId }
+          }
+        })
+        if (like) {
+          await ctx.prisma.updateLike({
+            where: { id: like.id },
+            data: { state: 'DISLIKED' }
+          })
+        } else {
+          await ctx.prisma.createLike({
+            state: 'DISLIKED',
+            drop: {
+              connect: { id }
+            },
+            user: {
+              connect: { id: userId }
+            }
+          })
+        }
+        return ctx.prisma.drop({ id })
+      }
+    })
+    t.field('undoLike', {
+      type: 'Drop',
+      args: {
+        id: idArg()
+      },
+      resolve: async (parent, { id }, ctx) => {
+        const userId = getUserId(ctx)
+        const dropExists = await ctx.prisma.$exists.drop({ id })
+        if (!dropExists) {
+          throw new ApolloError('Drop not found', 'BAD REQUEST')
+        }
+        const [ like ] = await ctx.prisma.likes({
+          where: {
+            drop: { id },
+            user: { id: userId }
+          }
+        })
+        if (like) {
+          await ctx.prisma.deleteLike({
+            id: like.id
+          })
+        }
+        return ctx.prisma.drop({ id })
       }
     })
   }
