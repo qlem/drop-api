@@ -19,7 +19,16 @@ export const Drop = prismaObjectType({
           }
         })
         if (like) {
-          return like.state
+          return 'LIKED'
+        }
+        const [ dislike ] = await ctx.prisma.dislikes({
+          where: {
+            drop: { id: parent.id },
+            user: { id: userId }
+          }
+        })
+        if (dislike) {
+          return 'DISLIKED'
         }
       }
     })
@@ -27,8 +36,7 @@ export const Drop = prismaObjectType({
       resolve: async (parent, args, ctx) => {
         const liked = await ctx.prisma.likes({
           where: {
-            drop: { id: parent.id },
-            state: 'LIKED'
+            drop: { id: parent.id }
           }
         })
         return liked.length
@@ -36,10 +44,9 @@ export const Drop = prismaObjectType({
     })
     t.int('dislikeCount', {
       resolve: async (parent, args, ctx) => {
-        const disliked = await ctx.prisma.likes({
+        const disliked = await ctx.prisma.dislikes({
           where: {
-            drop: { id: parent.id },
-            state: 'DISLIKED'
+            drop: { id: parent.id }
           }
         })
         return disliked.length
