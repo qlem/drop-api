@@ -150,6 +150,7 @@ export const Mutation = prismaObjectType({
       args: {
         id: idArg()
       },
+      description: 'Like a Drop (provide its ID). When the drop is already liked, the like is removed.',
       resolve: async (parent, { id }, ctx) => {
         if (!ctx.user) {
           throw new AuthenticationError('Not authorized')
@@ -191,6 +192,7 @@ export const Mutation = prismaObjectType({
       args: {
         id: idArg()
       },
+      description: 'Dislike a Drop (provide its ID). When the drop is already disliked, the dislike is removed.',
       resolve: async (parent, { id }, ctx) => {
         if (!ctx.user) {
           throw new AuthenticationError('Not authorized')
