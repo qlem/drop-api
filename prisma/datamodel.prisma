@@ -1,3 +1,8 @@
+enum Role {
+  ADMIN,
+  USER
+}
+
 type Drop {
   id: ID! @unique
   createdAt: DateTime!
@@ -14,6 +19,7 @@ type User {
   password: String!
   username: String! @unique
   drops: [Drop!]!
+  roles: [Role!]!
 }
 
 type Location {

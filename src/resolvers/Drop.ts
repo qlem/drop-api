@@ -1,5 +1,4 @@
 import { prismaObjectType } from 'nexus-prisma'
-import { getUserId } from "../utils"
 
 export const Drop = prismaObjectType({
   name: 'Drop',
@@ -8,14 +7,13 @@ export const Drop = prismaObjectType({
     t.string('likeState', {
       nullable: true,
       resolve: async (parent, args, ctx) => {
-        const userId = getUserId(ctx, true)
-        if (!userId) {
+        if (!ctx.user) {
           return null
         }
         const [ like ] = await ctx.prisma.likes({
           where: {
             drop: { id: parent.id },
-            user: { id: userId }
+            user: { id: ctx.user.id }
           }
         })
         if (like) {
@@ -24,7 +22,7 @@ export const Drop = prismaObjectType({
         const [ dislike ] = await ctx.prisma.dislikes({
           where: {
             drop: { id: parent.id },
-            user: { id: userId }
+            user: { id: ctx.user.id }
           }
         })
         if (dislike) {

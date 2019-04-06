@@ -5,6 +5,8 @@ import { makePrismaSchema } from 'nexus-prisma'
 import * as path from 'path'
 import * as allTypes from './resolvers'
 import { ApolloServer } from 'apollo-server'
+import * as jwt from 'jsonwebtoken'
+import { Token } from './types'
 
 export const PORT = 4000
 
@@ -55,7 +57,20 @@ const schema = makePrismaSchema({
 
 const server = new ApolloServer({
   schema,
-  context: req => ({ ...req, prisma }),
+  context: async req => {
+    let user = null
+    const authorization= req.req.get('Authorization')
+    if (authorization) {
+      const token = authorization.replace('Bearer ', '')
+      try {
+        const { userId } = jwt.verify(token, process.env.API_SECRET) as Token
+        user = await prisma.user({ id: userId })
+      } catch (e) {
+        user = null
+      }
+    }
+    return ({ ...req, prisma, user })
+  },
   introspection: true,
   playground: {
     settings: {

@@ -1,6 +1,5 @@
 import { prismaObjectType } from 'nexus-prisma'
 import { arg, idArg, stringArg } from 'nexus'
-import { getUserId } from '../utils'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
 import { ApolloError, AuthenticationError } from 'apollo-server'
@@ -17,7 +16,13 @@ export const Mutation = prismaObjectType({
       },
       resolve: async (parent, args, ctx) => {
         const password = await bcrypt.hash(args.password, 10)
-        const user = await ctx.prisma.createUser({...args, password})
+        const user = await ctx.prisma.createUser({
+          ...args,
+          password,
+          roles: {
+            set: 'USER'
+          }
+        })
         return {
           token: jwt.sign({userId: user.id}, process.env.API_SECRET),
           user
@@ -53,7 +58,9 @@ export const Mutation = prismaObjectType({
         color: stringArg()
       },
       resolve: async (parent, {text, location: {latitude, longitude, altitude}, color}, ctx) => {
-        const userId = getUserId(ctx)
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authorized')
+        }
         return ctx.prisma.createDrop({
           text,
           color,
@@ -65,7 +72,7 @@ export const Mutation = prismaObjectType({
             }
           },
           author: {
-            connect: {id: userId}
+            connect: { id: ctx.user.id }
           }
         })
       }
@@ -78,10 +85,12 @@ export const Mutation = prismaObjectType({
         color: stringArg()
       },
       resolve: async (parent, {id, text, color}, ctx) => {
-        const userId = getUserId(ctx)
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authorized')
+        }
         const dropExists = await ctx.prisma.$exists.drop({
           id,
-          author: {id: userId}
+          author: { id: ctx.user.id }
         })
         if (!dropExists) {
           throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
@@ -101,10 +110,12 @@ export const Mutation = prismaObjectType({
         id: idArg()
       },
       resolve: async (parent, { id }, ctx) => {
-        const userId = getUserId(ctx)
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authorized')
+        }
         const dropExists = await ctx.prisma.$exists.drop({
           id,
-          author: {id: userId}
+          author: {id: ctx.user.id}
         })
         if (!dropExists) {
           throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
@@ -119,9 +130,11 @@ export const Mutation = prismaObjectType({
         username: stringArg()
       },
       resolve: async (parent, { username }, ctx) => {
-        const userId = getUserId(ctx)
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authorized')
+        }
         return ctx.prisma.updateUser({
-          where: { id: userId },
+          where: { id: ctx.user.id },
           data: {
             username
           }
@@ -134,7 +147,10 @@ export const Mutation = prismaObjectType({
         id: idArg()
       },
       resolve: async (parent, { id }, ctx) => {
-        const userId = getUserId(ctx)
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authorized')
+        }
+        const userId = ctx.user.id
         const dropExists = await ctx.prisma.$exists.drop({ id })
         if (!dropExists) {
           throw new ApolloError('Drop not found', 'BAD REQUEST')
@@ -172,7 +188,10 @@ export const Mutation = prismaObjectType({
         id: idArg()
       },
       resolve: async (parent, { id }, ctx) => {
-        const userId = getUserId(ctx)
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authorized')
+        }
+        const userId = ctx.user.id
         const dropExists = await ctx.prisma.$exists.drop({ id })
         if (!dropExists) {
           throw new ApolloError('Drop not found', 'BAD REQUEST')
@@ -202,6 +221,36 @@ export const Mutation = prismaObjectType({
           })
         }
         return ctx.prisma.drop({ id })
+      }
+    })
+    t.field('deleteUser', {
+      ...t.prismaType.deleteUser,
+      args: {
+        id: idArg()
+      },
+      resolve (parent, { id }, ctx) {
+        if (!ctx.user || !ctx.user.roles.includes('ADMIN')) {
+          throw new AuthenticationError('Not authorized')
+        }
+        return ctx.prisma.deleteUser({ id })
+      }
+    })
+    t.field('setRole', {
+      ...t.prismaType.updateUser,
+      args: {
+        userId: idArg(),
+        roles: arg({ type: 'Role', list: true })
+      },
+      resolve: async (parent, { userId, roles }, ctx) => {
+        if (!ctx.user || !ctx.user.roles.includes('ADMIN')) {
+          throw new AuthenticationError('Not authorized')
+        }
+        return ctx.prisma.updateUser({
+          where: { id: userId },
+          data: {
+            roles: { set: roles }
+          }
+        })
       }
     })
   }

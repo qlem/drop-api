@@ -2,6 +2,7 @@ import * as jwt from 'jsonwebtoken'
 import { prismaObjectType } from 'nexus-prisma'
 import { floatArg } from 'nexus'
 import { findDistance } from '../utils'
+import { AuthenticationError } from 'apollo-server'
 
 interface Token {
   userId: string;
@@ -13,7 +14,7 @@ export const Query = prismaObjectType({
     t.prismaFields([
       { name: 'drops', alias: 'dropped' },
       'drop'
-      ])
+    ])
     t.field('droppedAround', {
       type: 'Drop',
       list: true,
@@ -53,6 +54,15 @@ export const Query = prismaObjectType({
           }
         }
         return { isAuth: false }
+      }
+    })
+    t.field('users', {
+      ...t.prismaType.users,
+      resolve (parent, args, ctx) {
+        if (!ctx.user || !ctx.user.roles.includes('ADMIN')) {
+          throw new AuthenticationError('Not authorized')
+        }
+        return ctx.prisma.users(args)
       }
     })
   }
