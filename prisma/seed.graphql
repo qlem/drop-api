@@ -5,20 +5,22 @@ mutation {
             username: "toto",
             password: "$2a$10$kNb019ifYgg./BVpvK0JMe3dYMD9px2WfsOqJhN42k.e4WwbC3uiW" # -> toto
             roles: {
-                set: "USER"
+                set: USER
             }
         }
     ) {
         id
     }
+}
 
+mutation {
     createUser(
         data: {
             email: "admin@admin.ad",
             username: "admin",
             password: "$2b$10$YLuWOHhwXhwnFOx4IQ0JIe/CN6z0mEEY5xpoZ5UqVV4lDo6D4RBdO" # -> admin
             roles: {
-                set: [ "USER", "ADMIN" ]
+                set: [ USER, ADMIN ]
             }
         }
     ) {
