@@ -88,12 +88,14 @@ export const Mutation = prismaObjectType({
         if (!ctx.user) {
           throw new AuthenticationError('Not authorized')
         }
-        const dropExists = await ctx.prisma.$exists.drop({
-          id,
-          author: { id: ctx.user.id }
-        })
-        if (!dropExists) {
-          throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
+        if (!ctx.user.roles.includes('ADMIN')) {
+          const dropExists = await ctx.prisma.$exists.drop({
+            id,
+            author: { id: ctx.user.id }
+          })
+          if (!dropExists) {
+            throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
+          }
         }
         return ctx.prisma.updateDrop({
           where: {id},
@@ -113,18 +115,19 @@ export const Mutation = prismaObjectType({
         if (!ctx.user) {
           throw new AuthenticationError('Not authorized')
         }
-        const dropExists = await ctx.prisma.$exists.drop({
-          id,
-          author: {id: ctx.user.id}
-        })
-        if (!dropExists) {
-          throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
+        if (!ctx.user.roles.includes('ADMIN')) {
+          const dropExists = await ctx.prisma.$exists.drop({
+            id,
+            author: {id: ctx.user.id}
+          })
+          if (!dropExists) {
+            throw new ApolloError('Drop not found or you\'re not the author', 'BAD REQUEST')
+          }
         }
-
         return ctx.prisma.deleteDrop({id})
       }
     })
-    t.field('updateUser', {
+    t.field('updateUsername', {
       ...t.prismaType.updateUser,
       args: {
         username: stringArg()
@@ -233,6 +236,16 @@ export const Mutation = prismaObjectType({
           throw new AuthenticationError('Not authorized')
         }
         return ctx.prisma.deleteUser({ id })
+      }
+    })
+    t.field('deleteMe', {
+      ...t.prismaType.deleteUser,
+      args: {},
+      resolve (parent, args, ctx) {
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authorized')
+        }
+        return ctx.prisma.deleteUser({ id: ctx.user.id })
       }
     })
     t.field('setRole', {
