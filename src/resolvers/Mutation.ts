@@ -129,6 +129,7 @@ export const Mutation = prismaObjectType({
     })
     t.field('updateUsername', {
       ...t.prismaType.updateUser,
+      description: 'Update its own username',
       args: {
         username: stringArg()
       },
@@ -228,6 +229,7 @@ export const Mutation = prismaObjectType({
     })
     t.field('deleteUser', {
       ...t.prismaType.deleteUser,
+      description: 'ADMIN role required',
       args: {
         id: idArg()
       },
@@ -240,6 +242,7 @@ export const Mutation = prismaObjectType({
     })
     t.field('deleteMe', {
       ...t.prismaType.deleteUser,
+      description: 'Delete its own user',
       args: {},
       resolve (parent, args, ctx) {
         if (!ctx.user) {
@@ -250,6 +253,7 @@ export const Mutation = prismaObjectType({
     })
     t.field('setRole', {
       ...t.prismaType.updateUser,
+      description: 'ADMIN role required',
       args: {
         userId: idArg(),
         roles: arg({ type: 'Role', list: true })

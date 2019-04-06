@@ -58,6 +58,7 @@ export const Query = prismaObjectType({
     })
     t.field('users', {
       ...t.prismaType.users,
+      description: 'ADMIN role required',
       resolve (parent, args, ctx) {
         if (!ctx.user || !ctx.user.roles.includes('ADMIN')) {
           throw new AuthenticationError('Not authorized')
