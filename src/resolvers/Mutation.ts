@@ -50,6 +50,31 @@ export const Mutation = prismaObjectType({
         }
       }
     })
+    t.field('loginBack', {
+      type: 'AuthPayload',
+      args: {
+        email: stringArg(),
+        password: stringArg()
+      },
+      description: 'ADMIN role required',
+      resolve: async (parent, { email, password }, ctx) => {
+        const user = await ctx.prisma.user({ email })
+        if (!user) {
+          throw new AuthenticationError('Invalid email')
+        }
+        if (!user.roles.includes('ADMIN')) {
+          throw new AuthenticationError('You are not an admin')
+        }
+        const valid = await bcrypt.compare(password, user.password)
+        if (!valid) {
+          throw new AuthenticationError('Invalid password')
+        }
+        return {
+          token: jwt.sign({userId: user.id}, process.env.API_SECRET),
+          user
+        }
+      }
+    })
     t.field('createDrop', {
       ...t.prismaType.createDrop,
       args: {
