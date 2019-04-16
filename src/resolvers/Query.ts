@@ -1,4 +1,3 @@
-import * as jwt from 'jsonwebtoken'
 import { prismaObjectType } from 'nexus-prisma'
 import { floatArg } from 'nexus'
 import { findDistance } from '../utils'
@@ -38,22 +37,20 @@ export const Query = prismaObjectType({
     })
     t.field('amIAuth', {
       type: 'AuthCheck',
-      resolve: async (parent, args, ctx) => {
-        const Authorization = ctx.req.headers.authorization
-        if (Authorization) {
-          const token = Authorization.replace('Bearer ', '')
-          try {
-            const { userId } = jwt.verify(token, process.env.API_SECRET) as Token
-            const me = await ctx.prisma.user({ id: userId })
-            if (!me) {
-              return { isAuth: false }
-            }
-            return { isAuth: true, me }
-          } catch (e) {
-            return { isAuth: false }
-          }
+      resolve: async (parent, args, { user }) => {
+        if (!user) {
+          return { isAuth: false }
         }
-        return { isAuth: false }
+        return { isAuth: true, me: user }
+      }
+    })
+    t.field('amIAdmin', {
+      type: 'Boolean',
+      resolve: async (parent, args, { user }) => {
+        if (!user) {
+          return false
+        }
+        return user.roles.includes('ADMIN')
       }
     })
     t.field('users', {
