@@ -60,7 +60,7 @@ export const Query = prismaObjectType({
         if (!ctx.user || !ctx.user.roles.includes('ADMIN')) {
           throw new AuthenticationError('Not authorized')
         }
-        return ctx.prisma.users(args)
+        return ctx.prisma.users()
       }
     })
   }
