@@ -2,7 +2,7 @@ version: '3'
 services:
   drop_prisma:
     container_name: drop-prisma
-    image: prismagraphql/prisma:1.29
+    image: prismagraphql/prisma:1.31
     restart: always
     ports:
       - "4467:4467"
@@ -16,10 +16,9 @@ services:
             port: 5432
             user: prisma
             password: prisma
-            migrations: true
   drop_db:
     container_name: drop_db
-    image: postgres:10.5
+    image: postgres:latest
     restart: always
     environment:
       POSTGRES_USER: prisma

@@ -3,40 +3,40 @@ enum Role {
   USER
 }
 
-type Drop {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+type Drop @db(name: "drop") {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   text: String!
-  author: User
+  author: User! @relation(link: INLINE)
   location: Location!
   color: String!
 }
 
-type User {
-  id: ID! @unique
+type User @db(name: "user") {
+  id: ID! @id
   email: String! @unique
   password: String!
   username: String! @unique
   drops: [Drop!]!
-  roles: [Role!]!
+  roles: [Role!]! @scalarList(strategy: RELATION)
 }
 
-type Location {
-  id: ID! @unique
+type Location @db(name: "location") {
+  id: ID! @id
   latitude: Float!
   longitude: Float!
   altitude: Float!
 }
 
-type Like {
-  id: ID! @unique
+type Like @db(name: "like") {
+  id: ID! @id
   drop: Drop!
   user: User!
 }
 
-type Dislike {
-  id: ID! @unique
+type Dislike @db(name: "dislike") {
+  id: ID! @id
   drop: Drop!
   user: User!
 }

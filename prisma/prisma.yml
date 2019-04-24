@@ -5,7 +5,6 @@ generate:
     output: ../src/generated/prisma-client/
 hooks:
   post-deploy:
-    - prisma generate --env-file ../.env
     - npx nexus-prisma-generate --output ./src/generated/nexus-prisma --client ./src/generated/prisma-client
 secret: ${env:PRISMA_SECRET}
 seed:
