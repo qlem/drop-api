@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+
 interface Location {
   latitude: number;
   longitude: number;
@@ -27,4 +29,15 @@ export function findDistance (point1: Location, point2: Location): number {
   const dlambda = deg2rad(lon2 - lon1)
   const a = Math.pow(Math.sin(dphi / 2), 2) + Math.cos(lat1rad) * Math.cos(lat2rad) * Math.pow(Math.sin(dlambda / 2), 2)
   return 2 * EARTH_RADIUS * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
+export function profanityCheck(input: string) : boolean {
+    let list = fs.readFileSync(`badwords/all`, 'utf8')
+
+    return list.split('\n')
+        .filter(i => i.length)
+        .filter((word) => {
+        const wordExp = new RegExp(`${word.replace(/(\W)/g, '\\$1')}`, 'gi');
+        return wordExp.test(input);
+      }).length > 0 || false
 }
