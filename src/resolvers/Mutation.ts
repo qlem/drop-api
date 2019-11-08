@@ -107,9 +107,10 @@ export const Mutation = prismaObjectType({
       args: {
         id: idArg(),
         text: stringArg(),
+        location: arg({ type: 'LocationUpdateDataInput' }),
         color: stringArg()
       },
-      resolve: async (parent, {id, text, color}, ctx) => {
+      resolve: async (parent, {id, text, location: {latitude, longitude, altitude}, color}, ctx) => {
         if (!ctx.user) {
           throw new AuthenticationError('Not authorized')
         }
@@ -126,7 +127,14 @@ export const Mutation = prismaObjectType({
           where: {id},
           data: {
             text,
-            color
+            color,
+            location: {
+              update: {
+                latitude,
+                longitude,
+                altitude
+              }
+            }
           }
         })
       }
