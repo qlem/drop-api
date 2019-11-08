@@ -3,6 +3,7 @@ import { arg, idArg, stringArg } from 'nexus'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
 import { ApolloError, AuthenticationError } from 'apollo-server'
+import { profanityCheck } from '../utils';
 
 export const Mutation = prismaObjectType({
   name: 'Mutation',
@@ -85,6 +86,9 @@ export const Mutation = prismaObjectType({
       resolve: async (parent, {text, location: {latitude, longitude, altitude}, color}, ctx) => {
         if (!ctx.user) {
           throw new AuthenticationError('Not authorized')
+        }
+        if (profanityCheck(text)) {
+          throw new ApolloError('Please watch out your language, this drop contains profane words', 'BAD REQUEST')
         }
         return ctx.prisma.createDrop({
           text,
