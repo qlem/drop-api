@@ -239,6 +239,12 @@ export const Mutation = prismaObjectType({
         if (!dropExists) {
           throw new ApolloError('Drop not found', 'BAD REQUEST')
         }
+        const totalCount = await ctx.prisma.dislikes({
+          where: {
+            drop: { id }
+          }
+        })
+        console.log(totalCount)
         const [ dislike ] = await ctx.prisma.dislikes({
           where: {
             drop: { id },
@@ -250,6 +256,16 @@ export const Mutation = prismaObjectType({
             id: dislike.id
           })
         } else {
+          if (totalCount.length > 0) {
+            console.log('too many dislikes, deleting')
+            await ctx.prisma.deleteManyLikes({
+              drop: { id }
+            })
+            await ctx.prisma.deleteManyDislikes({
+              drop: { id }
+            })
+            return ctx.prisma.deleteDrop({id})
+          }
           await ctx.prisma.createDislike({
             drop: {
               connect: { id }
