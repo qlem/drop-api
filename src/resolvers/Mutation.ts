@@ -3,7 +3,7 @@ import { arg, idArg, stringArg } from 'nexus'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
 import { ApolloError, AuthenticationError } from 'apollo-server'
-import { profanityCheck } from '../utils';
+import { profanityCheck } from '../utils'
 
 export const Mutation = prismaObjectType({
   name: 'Mutation',
@@ -244,7 +244,6 @@ export const Mutation = prismaObjectType({
             drop: { id }
           }
         })
-        console.log(totalCount)
         const [ dislike ] = await ctx.prisma.dislikes({
           where: {
             drop: { id },
@@ -257,7 +256,6 @@ export const Mutation = prismaObjectType({
           })
         } else {
           if (totalCount.length > 0) {
-            console.log('too many dislikes, deleting')
             await ctx.prisma.deleteManyLikes({
               drop: { id }
             })

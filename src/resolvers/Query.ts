@@ -63,6 +63,30 @@ export const Query = prismaObjectType({
         return ctx.prisma.users()
       }
     })
+    t.field('profile', {
+      type: 'Profile',
+      resolve: async (parent, args, ctx) => {
+        if (!ctx.user) {
+          throw new AuthenticationError('Not authenticated')
+        }
+        const drops = await ctx.prisma.drops({ where: {
+          author: { id : ctx.user.id }
+        }})
+        let likes = 0
+        let dislikes = 0
+        for (const drop of drops) {
+          const allLikes = await ctx.prisma.likes({ where: { drop: { id: drop.id } } })
+          const allDislikes = await ctx.prisma.dislikes({ where: { drop: { id: drop.id } } })
+          likes += allLikes.length
+          dislikes += allDislikes.length
+        }
+        return {
+          me: ctx.user,
+          drops: drops.length,
+          likes,
+          reports: dislikes
+        }
+      }
+    })
   }
 })
-

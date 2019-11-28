@@ -3,7 +3,8 @@ import { User } from './User'
 import { AuthCheck } from './AuthCheck'
 import { Mutation } from './Mutation'
 import { AuthPayload } from './AuthPayload'
-import { Drop } from "./Drop"
+import { Drop } from './Drop'
+import { Profile } from './Profile'
 
 export const resolvers = {
   Query,
@@ -11,5 +12,6 @@ export const resolvers = {
   User,
   AuthCheck,
   AuthPayload,
-  Drop
+  Drop,
+  Profile
 }
